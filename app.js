@@ -1,3 +1,4 @@
+/* eslint no-underscore-dangle: ['error', {'allow': ['_id'] }] */
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
@@ -53,6 +54,12 @@ app.put('/campgrounds/:id', async (req, res) => {
   const { id } = req.params;
   const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
   res.redirect(`/campgrounds/${campground._id}`);
+});
+
+app.delete('/campgrounds/:id', async (req, res) => {
+  const { id } = req.params;
+  await Campground.findByIdAndDelete(id);
+  res.redirect('/campgrounds');
 });
 
 app.listen(3000, () => {

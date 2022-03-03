@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Campground = require('../models/campground');
+const { places, descriptors } = require('./seedHelpers');
 const cities = require('./cities');
 
 mongoose.connect('mongodb://localhost:27017/yelpcamp');
@@ -10,6 +11,8 @@ db.once('open', () => {
   console.log('Database connected');
 });
 
+const sample = (array) => array[Math.floor(Math.random() * array.length)];
+
 const seedDb = async () => {
   await Campground.deleteMany({});
   const camps = [];
@@ -18,6 +21,7 @@ const seedDb = async () => {
     const { city, state } = cities[randomIndex];
     const camp = new Campground({
       location: `${city}, ${state}`,
+      title: `${sample(descriptors)} ${sample(places)}`,
     });
     camps.push(camp);
   }
@@ -25,4 +29,6 @@ const seedDb = async () => {
   await Campground.create(results);
 };
 
-seedDb();
+seedDb().then(() => {
+  mongoose.connection.close();
+});

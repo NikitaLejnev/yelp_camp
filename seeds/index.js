@@ -18,10 +18,15 @@ const seedDb = async () => {
   const camps = [];
   for (let i = 0; i < 50; i += 1) {
     const randomIndex = Math.floor(Math.random() * 1000);
+    const price = Math.floor(Math.random() * 20) + 10;
     const { city, state } = cities[randomIndex];
     const camp = new Campground({
       location: `${city}, ${state}`,
       title: `${sample(descriptors)} ${sample(places)}`,
+      image: 'https://source.unsplash.com/collection/483251',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In viverra tellus mauris. In bibendum, justo et dignissim eleifend, risus orci ullamcorper justo, in lobortis massa nisi nec purus. Sed id dui porta, cursus justo sed, tristique nisl. Etiam id sem odio. Etiam eu suscipit ante, nec congue lacus. Vestibulum ac arcu sagittis, vehicula ex ut, laoreet risus. Nullam ultricies dolor eget lorem eleifend mattis. Fusce mattis erat interdum erat egestas, ultrices porttitor ex vestibulum.',
+      price,
     });
     camps.push(camp);
   }

@@ -19,7 +19,8 @@
     "express": "^4.17.3",
     "joi": "^17.6.0",
     "method-override": "^3.0.0",
-    "mongoose": "^6.2.4"
+    "mongoose": "^6.2.4",
+    "prettier": "^2.5.1"
   },
   "devDependencies": {
     "eslint": "^8.10.0",

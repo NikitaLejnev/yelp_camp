@@ -36,7 +36,7 @@
         <div class="mb-3">
           <label class="form-label" label="body">Review</label>
           <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" required></textarea>
-          <div class="valid-feedback">Looks good!</div>
+          <%- include('../partials/valid') %>
         </div>
         <button class="btn btn-success">Submit</button>
       </form>

@@ -5,6 +5,7 @@ const wrapAsync = require('../utils/wrapAsync');
 const ExpressError = require('../utils/ExpressError');
 const Campground = require('../models/campground');
 const { campgroundSchema } = require('../schemas');
+const { loggedIn } = require('../middleware');
 
 const router = express.Router();
 
@@ -23,11 +24,11 @@ router.get('/', wrapAsync(async (req, res) => {
   res.render('campgrounds/index', { campgrounds });
 }));
 
-router.get('/new', (req, res) => {
+router.get('/new', loggedIn, (req, res) => {
   res.render('campgrounds/new');
 });
 
-router.post('/', validateCampground, wrapAsync(async (req, res, next) => {
+router.post('/', loggedIn, validateCampground, wrapAsync(async (req, res, next) => {
   const campground = new Campground(req.body.campground);
   await campground.save();
   req.flash('success', 'Successfully created a campground!');
@@ -43,7 +44,7 @@ router.get('/:id', wrapAsync(async (req, res) => {
   return res.render('campgrounds/show', { campground });
 }));
 
-router.get('/:id/edit', wrapAsync(async (req, res) => {
+router.get('/:id/edit', loggedIn, wrapAsync(async (req, res) => {
   const campground = await Campground.findById(req.params.id);
   if (!campground) {
     req.flash('error', 'Campground not found');
@@ -52,14 +53,14 @@ router.get('/:id/edit', wrapAsync(async (req, res) => {
   return res.render('campgrounds/edit', { campground });
 }));
 
-router.put('/:id', validateCampground, wrapAsync(async (req, res) => {
+router.put('/:id', loggedIn, validateCampground, wrapAsync(async (req, res) => {
   const { id } = req.params;
   const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
   req.flash('success', 'Successfully updated a campground!');
   res.redirect(`/campgrounds/${campground._id}`);
 }));
 
-router.delete('/:id', wrapAsync(async (req, res) => {
+router.delete('/:id', loggedIn, wrapAsync(async (req, res) => {
   const { id } = req.params;
   await Campground.findByIdAndDelete(id);
   req.flash('success', 'Successfully deleted a campground!');

@@ -1,22 +1,11 @@
 /* eslint no-underscore-dangle: ['error', {'allow': ['_id'] }] */
 const express = require('express');
-const ExpressError = require('../utils/ExpressError');
 const wrapAsync = require('../utils/wrapAsync');
 const Campground = require('../models/campground');
 const Review = require('../models/review');
-const { reviewSchema } = require('../schemas');
+const { validateReview } = require('../middleware');
 
 const router = express.Router({ mergeParams: true });
-
-const validateReview = (req, res, next) => {
-  const { error } = reviewSchema.validate(req.body);
-  if (error) {
-    const msg = error.details.map((el) => el.message).join('.');
-    throw new ExpressError(msg, 400);
-  } else {
-    next();
-  }
-};
 
 router.post('/', validateReview, wrapAsync(async (req, res) => {
   const campground = await Campground.findById(req.params.id);

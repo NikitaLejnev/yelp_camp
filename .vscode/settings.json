@@ -1,6 +1,6 @@
 {
   "nuxt.isNuxtApp": false,
-  "workbench.colorTheme": "Night Owl Light",
+  "workbench.colorTheme": "Night Owl",
   "workbench.preferredDarkColorTheme": "Night Owl",
   "workbench.preferredLightColorTheme": "Night Owl Light",
   "editor.defaultFormatter": "esbenp.prettier-vscode"

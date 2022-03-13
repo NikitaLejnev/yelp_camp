@@ -56,9 +56,14 @@ router.get('/:id/edit', loggedIn, wrapAsync(async (req, res) => {
 
 router.put('/:id', loggedIn, validateCampground, wrapAsync(async (req, res) => {
   const { id } = req.params;
-  const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
+  const campground = await Campground.findById(id);
+  if (!campground.author.equals(req.user._id)) {
+    req.flash('error', 'You are not allowed to do it!');
+    return res.redirect(`/campgrounds/${id}`);
+  }
+  await Campground.findByIdAndUpdate(id, { ...req.body.campground });
   req.flash('success', 'Successfully updated a campground!');
-  res.redirect(`/campgrounds/${campground._id}`);
+  return res.redirect(`/campgrounds/${campground._id}`);
 }));
 
 router.delete('/:id', loggedIn, wrapAsync(async (req, res) => {

@@ -1,5 +1,6 @@
 /* eslint no-underscore-dangle: ['error', {'allow': ['_id'] }] */
 const Campground = require('./models/campground');
+const Review = require('./models/review');
 const { campgroundSchema } = require('./schemas');
 const ExpressError = require('./utils/ExpressError');
 const { reviewSchema } = require('./schemas');
@@ -17,6 +18,16 @@ const isAuthor = async (req, res, next) => {
   const { id } = req.params;
   const campground = await Campground.findById(id);
   if (!campground.author.equals(req.user._id)) {
+    req.flash('error', 'You are not allowed to do it!');
+    return res.redirect(`/campgrounds/${id}`);
+  }
+  return next();
+};
+
+const isReviewAuthor = async (req, res, next) => {
+  const { id, reviewId } = req.params;
+  const review = await Review.findById(reviewId);
+  if (!review.author.equals(req.user._id)) {
     req.flash('error', 'You are not allowed to do it!');
     return res.redirect(`/campgrounds/${id}`);
   }
@@ -46,6 +57,7 @@ const validateReview = (req, res, next) => {
 module.exports = {
   isLoggedIn,
   isAuthor,
+  isReviewAuthor,
   validateCampground,
   validateReview,
 };

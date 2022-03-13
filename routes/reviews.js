@@ -1,29 +1,23 @@
 /* eslint no-underscore-dangle: ['error', {'allow': ['_id'] }] */
 const express = require('express');
 const wrapAsync = require('../utils/wrapAsync');
-const Campground = require('../models/campground');
-const Review = require('../models/review');
+const reviews = require('../controllers/reviews');
 const { validateReview, isLoggedIn, isReviewAuthor } = require('../middleware');
 
 const router = express.Router({ mergeParams: true });
 
-router.post('/', isLoggedIn, validateReview, wrapAsync(async (req, res) => {
-  const campground = await Campground.findById(req.params.id);
-  const review = new Review(req.body.review);
-  review.author = req.user._id;
-  campground.reviews.push(review);
-  await review.save();
-  await campground.save();
-  req.flash('success', 'Successfully created a review!');
-  res.redirect(`/campgrounds/${campground._id}`);
-}));
+router.post(
+  '/',
+  isLoggedIn,
+  validateReview,
+  wrapAsync(reviews.createReview),
+);
 
-router.delete('/:reviewId', isLoggedIn, isReviewAuthor, wrapAsync(async (req, res) => {
-  const { id, reviewId } = req.params;
-  await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-  await Review.findByIdAndDelete(req.params.reviewId);
-  req.flash('success', 'Successfully deleted a review!');
-  res.redirect(`/campgrounds/${id}`);
-}));
+router.delete(
+  '/:reviewId',
+  isLoggedIn,
+  isReviewAuthor,
+  wrapAsync(reviews.destroyReview),
+);
 
 module.exports = router;

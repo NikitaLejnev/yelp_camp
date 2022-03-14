@@ -4,8 +4,9 @@ const multer = require('multer');
 const wrapAsync = require('../utils/wrapAsync');
 const { isLoggedIn, validateCampground, isAuthor } = require('../middleware');
 const campgrounds = require('../controllers/campgrounds');
+const { storage } = require('../cloudinary');
 
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ storage });
 const router = express.Router();
 
 router.route('/')

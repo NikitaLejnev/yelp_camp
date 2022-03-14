@@ -1,14 +1,17 @@
 /* eslint no-underscore-dangle: ['error', {'allow': ['_id'] }] */
 const express = require('express');
+const multer = require('multer');
 const wrapAsync = require('../utils/wrapAsync');
 const { isLoggedIn, validateCampground, isAuthor } = require('../middleware');
 const campgrounds = require('../controllers/campgrounds');
 
+const upload = multer({ dest: 'uploads/' });
 const router = express.Router();
 
 router.route('/')
   .get(wrapAsync(campgrounds.index))
-  .post(isLoggedIn, validateCampground, wrapAsync(campgrounds.createCampground));
+  // .post(isLoggedIn, validateCampground, wrapAsync(campgrounds.createCampground));
+  .post(upload.single('image'), (req, res) => {});
 
 router.get('/new', isLoggedIn, campgrounds.renderNewForm);
 
@@ -21,7 +24,6 @@ router.route('/:id')
     wrapAsync(campgrounds.updateCampground),
   )
   .delete(isLoggedIn, isAuthor, wrapAsync(campgrounds.destroyCampground));
-
 
 router.get(
   '/:id/edit',

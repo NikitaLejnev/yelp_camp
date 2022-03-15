@@ -20,16 +20,12 @@ router.route('/:id')
   .put(
     isLoggedIn,
     isAuthor,
+    upload.array('image'),
     validateCampground,
     wrapAsync(campgrounds.updateCampground),
   )
   .delete(isLoggedIn, isAuthor, wrapAsync(campgrounds.destroyCampground));
 
-router.get(
-  '/:id/edit',
-  isLoggedIn,
-  isAuthor,
-  wrapAsync(campgrounds.renderEditForm),
-);
+router.get('/:id/edit', isLoggedIn, isAuthor, wrapAsync(campgrounds.renderEditForm));
 
 module.exports = router;

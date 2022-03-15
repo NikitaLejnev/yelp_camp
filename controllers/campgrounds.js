@@ -10,7 +10,7 @@ const renderNewForm = (req, res) => {
   res.render('campgrounds/new');
 };
 
-const createCampground = async (req, res, next) => {
+const createCampground = async (req, res) => {
   const campground = new Campground(req.body.campground);
   campground.images = req.files.map((f) => ({ url: f.path, filename: f.filename }));
   campground.author = req.user._id;

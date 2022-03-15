@@ -1,6 +1,6 @@
 {
   "nuxt.isNuxtApp": false,
-  "workbench.colorTheme": "One Dark Pro Darker",
+  "workbench.colorTheme": "Quiet Light for VSC",
   "workbench.preferredDarkColorTheme": "One Dark Pro Darker",
   "workbench.preferredLightColorTheme": "Quiet Light for VSC",
   "editor.defaultFormatter": "esbenp.prettier-vscode",

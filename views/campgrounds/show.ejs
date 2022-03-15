@@ -1,9 +1,11 @@
-<% layout('layouts/boilerplate') %>
+<% layout('layouts/boilerplate')%>
 <link rel="stylesheet" href="/css/starability-basic.css"
 <div class="row">
   <div class="col-6">
     <div class="card mb-3">
-      <img class="card-img-top" src='<%= campground.image %>' alt="Card image cap">
+      <% for (let img of campground.images) { %>
+        <img class="card-img-top" src='<%=img.url%>' alt="Card image cap">
+      <% } %>
       <div class="card-body">
         <h5 class="card-title">
           <%= campground.title %>
@@ -34,40 +36,37 @@
           </div>
     </div>
   </div>
-  <div class="col-6">
     <% if(currentUser) { %>
       <h2>Leave a Review</h2>
-      <form class="mb-3 form-validated" action="/campgrounds/<%= campground._id%>/reviews" method="post" novalidate>
-        <div class="mb-3">
-          <fieldset class="starability-basic">
-            <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="0" checked aria-label="No rating." />
-            <input type="radio" id="first-rate1" name="review[rating]" value="1" />
-            <label for="first-rate1" title="Terrible">1 star</label>
-            <input type="radio" id="first-rate2" name="review[rating]" value="2" />
-            <label for="first-rate2" title="Not good">2 stars</label>
-            <input type="radio" id="first-rate3" name="review[rating]" value="3" />
-            <label for="first-rate3" title="Average">3 stars</label>
-            <input type="radio" id="first-rate4" name="review[rating]" value="4" />
-            <label for="first-rate4" title="Very good">4 stars</label>
-            <input type="radio" id="first-rate5" name="review[rating]" value="5" />
-            <label for="first-rate5" title="Amazing">5 stars</label>
-          </fieldset>
-        </div>
+      <form class="mb-3 form-validated" action="/campgrounds/<%=campground._id%>/reviews" method="post" novalidate>
+            <fieldset class="starability-basic">
+                <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="0" checked aria-label="No rating." />
+                <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                <label for="first-rate1" title="Terrible">1 star</label>
+                <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                <label for="first-rate2" title="Not good">2 stars</label>
+                <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                <label for="first-rate3" title="Average">3 stars</label>
+                <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                <label for="first-rate4" title="Very good">4 stars</label>
+                <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                <label for="first-rate5" title="Amazing">5 stars</label>
+            </fieldset>
         <div class="mb-3">
           <label class="form-label" label="body">Write your review</label>
-          <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" required></textarea>
+                <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" required></textarea>
           <%- include('../partials/valid') %>
-        </div>
-        <button class="btn btn-success">Submit</button>
-      </form>
-      <% } %>
+            </div>
+            <button class="btn btn-success">Submit</button>
+        </form>
+        <% } %>
         <% for(let review of campground.reviews) { %>
           <div class="card mb-3 ">
             <div class="card-body">
               <h5 class="card-title">
                 <%= review.body %>
               </h5>
-              <p class="starability-result" data-rating="<%= review.rating %>">
+                <p class="starability-result" data-rating="<%=review.rating%>">
                 Rated <%= review.rating %> stars out of 5
               </p>
               <h6 class="card-subtitle mb-2 text-muted">By <%= review.author.username %>
@@ -80,7 +79,7 @@
               </form>
               <% } %>
             </div>
-          </div>
-          <% } %>
-  </div>
+        </div>
+        <% } %>
+    </div>
 </div>

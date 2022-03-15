@@ -13,9 +13,9 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const ExpressError = require('./utils/ExpressError');
+const userRoutes = require('./routes/users');
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
-const userRoutes = require('./routes/users');
 const User = require('./models/user');
 
 mongoose.connect('mongodb://localhost:27017/yelpcamp');
@@ -79,7 +79,7 @@ app.all('*', (req, res, next) => {
 
 app.use((err, req, res, next) => {
   const { statusCode = 500, stack } = err;
-  const errMessage = (!err.message) ? 'Error' : err.message;
+  const errMessage = err.message || 'Error';
   res.status(statusCode).render('error', { errMessage, stack });
 });
 

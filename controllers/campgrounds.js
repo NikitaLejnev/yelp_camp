@@ -10,8 +10,9 @@ const renderNewForm = (req, res) => {
   res.render('campgrounds/new');
 };
 
-const createCampground = async (req, res) => {
+const createCampground = async (req, res, next) => {
   const campground = new Campground(req.body.campground);
+  campground.images = req.files.map((f) => ({ url: f.path, filename: f.filename }));
   campground.author = req.user._id;
   await campground.save();
   req.flash('success', 'Successfully created a campground!');
@@ -19,12 +20,12 @@ const createCampground = async (req, res) => {
 };
 
 const showCampground = async (req, res) => {
-  const campground = await (await Campground.findById(req.params.id).populate({
+  const campground = await Campground.findById(req.params.id).populate({
     path: 'reviews',
     populate: {
       path: 'author',
     },
-  }).populate('author'));
+  }).populate('author');
   if (!campground) {
     req.flash('error', 'Campground not found');
     return res.redirect('/campgrounds');

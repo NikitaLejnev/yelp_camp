@@ -1,9 +1,8 @@
 /* eslint no-underscore-dangle: ['error', {'allow': ['_id'] }] */
 const Campground = require('./models/campground');
 const Review = require('./models/review');
-const { campgroundSchema } = require('./schemas');
+const { campgroundSchema, reviewSchema } = require('./schemas');
 const ExpressError = require('./utils/ExpressError');
-const { reviewSchema } = require('./schemas');
 
 const isLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {

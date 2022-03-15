@@ -6,20 +6,19 @@
         method="POST" novalidate>
         <div class="mb-3">
           <label class="form-label" for="title">Title</label>
-          <input class="form-control" type="text" id="title" name="campground[title]" value="<%=campground.title%>"
+          <input class="form-control" type="text" id="title" name="campground[title]" value="<%= campground.title %>"
             required />
           <%- include('../partials/valid') %>
         </div class="mb-3">
         <div class="mb-3">
           <label class="form-label" for="location">Location</label>
           <input class="form-control" type="text" id="location" name="campground[location]"
-            value="<%=campground.location%>" required />
+            value="<%= campground.location %>" required>
           <%- include('../partials/valid') %>
         </div>
         <div class="mb-3">
-          <label for="formFileMultiple" class="form-label">Add more images</label>
-          <input class="form-control" type="file" id="form" multiple>
-          <%- include('../partials/valid') %>
+          <label class="form-label" for="image" >Add more images</label>
+          <input type="file" name="image" id="image" class="form-control" multiple>
         </div>
         <div class="mb-3">
           <label class="form-label" for="price">Campground price</label>
@@ -39,18 +38,27 @@
                 </textarea>
         </div>
         <div class="mb-3">
-          <% campground.images.forEach((img, i) => { %>
-            <img class="img-thumbnail" src="<%= img.url %>" alt="Campground images before edit">
+          <div class="form-file custom-file">
+            <input type="file" class="form-file-input" id="image" name="image" multiple>
+            <label class="form-file-label" for="image">
+              <span class="form-file-text custom-file-label">Add more image(s)...</span>
+              <span class="form-file-button">Browse</span>
+            </label>
+          </div>
+        </div>
+        <div class="mb-3">
+          <% campground.images.forEach((img, i)=> { %>
+            <img class="img-thumbnail" src="<%=img.thumbnail%>" alt="">
             <div class="form-check-inline">
               <input type="checkbox" value="<%=img.filename%>" name="deleteImages[]" id="image-<%=i%>">
             </div>
             <label for="image-<%=i%>">Delete image</label>
-          <% }) %>
+            <% })%>
         </div>
         <div class="mb-3">
-          <button class="btn btn-info">Update Campgrounds</button>
+          <button class="btn btn-info">Update Campground</button>
         </div>
       </form>
-      <a href="/campgrounds/<%= campground._id %>"> Back to campground</a>
+      <a href="/campgrounds/<%= campground._id%>">Back To Campground</a>
     </div>
   </div>

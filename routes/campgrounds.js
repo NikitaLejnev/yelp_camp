@@ -2,7 +2,7 @@
 const express = require('express');
 const multer = require('multer');
 const wrapAsync = require('../utils/wrapAsync');
-const { isLoggedIn, validateCampground, isAuthor } = require('../middleware');
+const { isLoggedIn, isAuthor, validateCampground } = require('../middleware');
 const campgrounds = require('../controllers/campgrounds');
 const { storage } = require('../cloudinary');
 
@@ -26,6 +26,11 @@ router.route('/:id')
   )
   .delete(isLoggedIn, isAuthor, wrapAsync(campgrounds.destroyCampground));
 
-router.get('/:id/edit', isLoggedIn, isAuthor, wrapAsync(campgrounds.renderEditForm));
+router.get(
+  '/:id/edit',
+  isLoggedIn,
+  isAuthor,
+  wrapAsync(campgrounds.renderEditForm),
+);
 
 module.exports = router;

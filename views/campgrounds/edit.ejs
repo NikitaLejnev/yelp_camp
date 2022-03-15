@@ -39,6 +39,15 @@
                 </textarea>
         </div>
         <div class="mb-3">
+          <% campground.images.forEach((img, i) => { %>
+            <img class="img-thumbnail" src="<%= img.url %>" alt="Campground images before edit">
+            <div class="form-check-inline">
+              <input type="checkbox" value="<%=img.filename%>" name="deleteImages[]" id="image-<%=i%>">
+            </div>
+            <label for="image-<%=i%>">Delete image</label>
+          <% }) %>
+        </div>
+        <div class="mb-3">
           <button class="btn btn-info">Update Campgrounds</button>
         </div>
       </form>

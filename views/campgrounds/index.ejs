@@ -9,7 +9,9 @@
       <% for (let campground of campgrounds) {%>
         <div class="row">
           <div class="col-md-4">
+          <% if (campground.images.length > 0) { %>
             <img class="img-fluid" src="<%= campground.images[0].url %>">
+          <% } %>
           </div>
           <div class="col-md-8">
             <div class="card-body">

@@ -1,5 +1,6 @@
 /* eslint no-underscore-dangle: ['error', {'allow': ['_id'] }] */
 const Campground = require('../models/campground');
+const cloudinary = require('../cloudinary');
 
 const index = async (req, res) => {
   const campgrounds = await Campground.find({});
@@ -49,6 +50,16 @@ const updateCampground = async (req, res) => {
   const images = req.files.map((f) => ({ url: f.path, filename: f.filename }));
   campground.images.push(...images);
   await campground.save();
+  if (req.body.deleteImages) {
+    await req.body.deleteImages.forEach((image) => {
+      cloudinary.cloudinary.uploader.destroy(image);
+    });
+    await campground.updateOne({
+      $pull: {
+        images: { filename: { $in: req.body.deleteImages } },
+      },
+    });
+  }
   req.flash('success', 'Successfully updated a campground!');
   return res.redirect(`/campgrounds/${campground._id}`);
 };

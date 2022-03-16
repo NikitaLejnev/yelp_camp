@@ -9,8 +9,10 @@
     <% for (let campground of campgrounds) {%>
     <div class="row">
       <div class="col-md-4">
-        <% if (campground.images.length > 0) { %>
+        <% if (campground.images.length > 0) {%> %>
         <img class="img-fluid" src="<%= campground.images[0].url %>">
+        <% } else { %>
+        <img class="img-fluid" src="https://res.cloudinary.com/dap7pbt5c/image/upload/v1647325980/YelpCamp/o1xi5qvva3px50mqikbs.jpg">
         <% } %>
       </div>
       <div class="col-md-8">

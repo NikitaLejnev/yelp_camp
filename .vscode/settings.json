@@ -1,8 +1,14 @@
 {
   "nuxt.isNuxtApp": false,
-  "workbench.colorTheme": "One Dark Pro Darker",
+  "workbench.colorTheme": "Quiet Light for VSC",
   "workbench.preferredDarkColorTheme": "One Dark Pro Darker",
   "workbench.preferredLightColorTheme": "Quiet Light for VSC",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.acceptSuggestionOnEnter": "off"
+  "editor.acceptSuggestionOnEnter": "off",
+  "[html]": {
+    "editor.defaultFormatter": "j69.ejs-beautify"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "HookyQR.beautify"
+  }
 }

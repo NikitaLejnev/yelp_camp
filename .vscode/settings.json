@@ -10,5 +10,8 @@
   },
   "[javascript]": {
     "editor.defaultFormatter": "HookyQR.beautify"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "HookyQR.beautify"
   }
 }

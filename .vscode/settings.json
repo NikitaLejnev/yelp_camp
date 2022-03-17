@@ -9,7 +9,7 @@
     "editor.defaultFormatter": "j69.ejs-beautify"
   },
   "[javascript]": {
-    "editor.defaultFormatter": "HookyQR.beautify"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[css]": {
     "editor.defaultFormatter": "HookyQR.beautify"

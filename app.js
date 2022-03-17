@@ -14,13 +14,14 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
+const MongoStore = require('connect-mongo');
 const ExpressError = require('./utils/ExpressError');
 const userRoutes = require('./routes/users');
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
 const User = require('./models/user');
 
-mongoose.connect('mongodb://localhost:27017/yelpcamp');
+mongoose.connect(process.env.DB_URL);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error'));
@@ -36,9 +37,11 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.urlencoded({
-  extended: true,
-}));
+app.use(
+  express.urlencoded({
+    extended: true,
+  }),
+);
 app.use(express.json());
 app.use(mongoSanitize());
 
@@ -85,7 +88,20 @@ app.use(
   }),
 );
 
+const store = MongoStore.create({
+  mongoUrl: process.env.DB_URL,
+  touchAfter: 24 * 60 * 60,
+  crypto: {
+    secret: 'donttakeshortcutsinyourlearning',
+  },
+});
+
+store.on('error', (err) => {
+  console.log('Session Store Error', err);
+});
+
 const sessionConfig = {
+  store,
   name: 'sesh',
   secret: 'donttakeshortcutsinyourlearning',
   resave: false,
@@ -128,9 +144,7 @@ app.all('*', (req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  const {
-    statusCode = 500, stack,
-  } = err;
+  const { statusCode = 500, stack } = err;
   const errMessage = err.message || 'Error';
   res.status(statusCode).render('error', {
     errMessage,

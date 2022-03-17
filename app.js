@@ -21,7 +21,8 @@ const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
 const User = require('./models/user');
 
-mongoose.connect(process.env.DB_URL);
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/yelp-camp';
+mongoose.connect(dbUrl);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error'));
@@ -88,11 +89,12 @@ app.use(
   }),
 );
 
+const secret = process.env.SECRET || 'donttakeshortcutsinyourlearning';
 const store = MongoStore.create({
-  mongoUrl: process.env.DB_URL,
+  mongoUrl: dbUrl,
   touchAfter: 24 * 60 * 60,
   crypto: {
-    secret: 'donttakeshortcutsinyourlearning',
+    secret,
   },
 });
 
@@ -102,8 +104,8 @@ store.on('error', (err) => {
 
 const sessionConfig = {
   store,
+  secret,
   name: 'sesh',
-  secret: 'donttakeshortcutsinyourlearning',
   resave: false,
   saveUninitialized: true,
   cookie: {
